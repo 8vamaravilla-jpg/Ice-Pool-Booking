@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Book an in-person visit or request an online quote for Ice Pool Maintenance.">
+    <title>Book a Service | Ice Pool Maintenance</title>
+    <style>
+        :root {
+            --primary-blue: #0077b6;
+            --primary-hover: #023e8a;
+            --ice-blue: rgba(202, 240, 248, 0.85); /* Translucent ice blue for frosted effect */
+            --page-bg: #d8f3dc; 
+            --dark-blue: #03045e;
+            --text-dark: #222222;
+            --text-muted: #4a5568;
+            --border-color: rgba(0, 119, 182, 0.25);
+            --focus-ring: rgba(0, 119, 182, 0.3);
+            --error-red: #dc3545;
+            --success-green: #198754;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            /* Smooth gradient layered with an inline SVG pattern of melting ice/water flow lines */
+            background-color: #e6f7fc;
+            background-image: 
+                linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(144, 224, 239, 0.3) 100%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath d='M0,60 Q30,50 60,60 T120,60' fill='none' stroke='rgba(0,119,182,0.06)' stroke-width='2.5'/%3E%3Cpath d='M0,100 Q30,90 60,100 T120,100' fill='none' stroke='rgba(255,255,255,0.7)' stroke-width='1.5'/%3E%3Cpath d='M60,0 Q50,30 60,60 T60,120' fill='none' stroke='rgba(0,119,182,0.04)' stroke-width='2'/%3E%3Cpath d='M10,10 L30,40 L10,70' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='1.5'/%3E%3Cpath d='M110,20 L90,50 L110,90' fill='none' stroke='rgba(0,119,182,0.05)' stroke-width='1.5'/%3E%3C/svg%3E");
+            background-attachment: fixed;
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.90); /* Highly readable bright backdrop */
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(3, 4, 94, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-top: 8px solid var(--primary-blue);
+            /* Frosted glass technique */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        header h1 {
+            color: var(--dark-blue);
+            font-size: clamp(24px, 5vw, 32px);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-row > .form-group {
+            flex: 1 1 min(200px, 100%);
+        }
+
+        /* Specialized flex weights for the address row on desktop */
+        @media (min-width: 651px) {
+            .address-main { flex: 2 1 0; }
+            .address-city { flex: 1.2 1 0; }
+            .address-postal { flex: 1 1 0; }
+        }
+
+        fieldset {
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        legend, label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark-blue);
+            font-size: 14px;
+        }
+
+        /* Adds a red asterisk to required fields automatically */
+        .required-label::after {
+            content: " *";
+            color: var(--error-red);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px; /* Prevents iOS zoom on focus */
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px var(--focus-ring);
+        }
+
+        /* Radio Cards */
+        .radio-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .radio-card {
+            flex: 1 1 calc(33.333% - 12px);
+            min-width: 120px;
+            position: relative;
+        }
+
+        .radio-card input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 14px 12px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            user-select: none;
+        }
+
+        .radio-card input[type="radio"]:checked + .radio-label {
+            background-color: #caf0f8;
+            border-color: var(--primary-blue);
+            color: var(--dark-blue);
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0, 119, 182, 0.1);
+        }
+
+        .radio-card input[type="radio"]:focus-visible + .radio-label {
+            box-shadow: 0 0 0 4px var(--focus-ring);
+        }
+
+        .divider {
+            border: 0;
+            border-top: 1px solid rgba(0, 119, 182, 0.15);
+            margin: 32px 0;
+        }
+
+        .submit-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .submit-btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.85;
+            cursor: not-allowed;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .submit-btn.loading .spinner {
+            display: inline-block;
+        }
+
+        /* Status Messages */
+        .status-message {
+            display: none;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 24px;
+            text-align: center;
+            font-weight: 500;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .status-success {
+            display: block;
+            background-color: #d1e7dd;
+            color: #0f5132;
+            border: 1px solid #badbcc;
+        }
+
+        .status-error {
+            display: block;
+            background-color: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+        }
+
+        /* Responsive Fixes */
+        @media (max-width: 650px) {
+            .container {
+                padding: 24px 20px;
+                margin: 10px auto;
+            }
+            .radio-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <header>
+            <h1>Ice Pool Maintenance</h1>
+            <p>Request an online quote or book an in-person visit today</p>
+        </header>
+
+        <form id="bookingForm" action="https://formspree.io/f/mnjybpnr" method="POST" novalidate>
+            <input type="hidden" id="emailSubject" name="_subject" value="New Service Booking Request">
+            
+            <input type="text" name="_gotcha" style="display:none">
+
+            <fieldset class="form-group">
+                <legend class="required-label">What can we help you with today?</legend>
+                <div class="radio-group">
+                    <div class="radio-card">
+                        <input type="radio" id="goal_visit" name="Service Goal" value="In-person Visit" checked>
+                        <label for="goal_visit" class="radio-label">Book In-Person Visit</label>
+                    </div>
+                    <div class="radio-card">
+                        <input type="radio" id="goal_quote" name="Service Goal" value="Online Quote">
+                        <label for="goal_quote" class="radio-label">Request Online Quote</label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <hr class="divider">
+
+            <div class="form-group">
+                <label for="fullName" class="required-label">Full Name</label>
+                <input type="text" id="fullName" name="Customer Name" placeholder="Jane Doe" autocomplete="name" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="phone" class="required-label">Phone Number</label>
+                    <input type="tel" id="phone" name="Phone Number" placeholder="(604) 555-0199" autocomplete="tel" required>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="required-label">Email Address</label>
+                    <input type="email" id="email" name="_replyto" placeholder="jane@example.com" autocomplete="email" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group address-main">
+                    <label for="address" class="required-label">Property Address</label>
+                    <input type="text" id="address" name="Property Address" placeholder="123 Blue Water Lane" autocomplete="street-address" required>
+                </div>
+                <div class="form-group address-city">
+                    <label for="city" class="required-label">City</label>
+                    <input type="text" id="city" name="City" placeholder="Burnaby" autocomplete="address-level2" required>
+                </div>
+                <div class="form-group address-postal">
+                    <label for="postalCode" class="required-label">Postal Code</label>
+                    <input type="text" id="postalCode" name="Postal Code" placeholder="V5A 1S6" autocomplete="postal-code" required>
+                </div>
+            </div>
+
+            <fieldset class="form-group">
+                <legend class="required-label">Water Feature Type</legend>
+                <div class="radio-group">
+                    <div class="radio-card">
+                        <input type="radio" id="type_pool" name="Water Feature Type" value="Swimming Pool" checked>
+                        <label for="type_pool" class="radio-label">Swimming Pool</label>
+                    </div>
+                    <div class="radio-card">
+                        <input type="radio" id="type_spa" name="Water Feature Type" value="Spa / Hot Tub">
+                        <label for="type_spa" class="radio-label">Spa / Hot Tub</label>
+                    </div>
+                    <div class="radio-card">
+                        <input type="radio" id="type_both" name="Water Feature Type" value="Both Pool and Spa">
+                        <label for="type_both" class="radio-label">Both</label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="form-group">
+                <label for="poolSize">Approximate Size / Volume (Optional)</label>
+                <input type="text" id="poolSize" name="Pool Size" placeholder="e.g., 15x30 ft, or 50,000 Liters">
+            </div>
+
+            <fieldset class="form-group">
+                <legend class="required-label">Preferred Method of Communication</legend>
+                <div class="radio-group">
+                    <div class="radio-card">
+                        <input type="radio" id="comm_email" name="Preferred Contact Method" value="Email" checked>
+                        <label for="comm_email" class="radio-label">Email</label>
+                    </div>
+                    <div class="radio-card">
+                        <input type="radio" id="comm_call" name="Preferred Contact Method" value="Phone Call">
+                        <label for="comm_call" class="radio-label">Call</label>
+                    </div>
+                    <div class="radio-card">
+                        <input type="radio" id="comm_text" name="Preferred Contact Method" value="Text Message">
+                        <label for="comm_text" class="radio-label">Text</label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="form-group">
+                <label for="notes">Additional Comments or Specific Requests</label>
+                <textarea id="notes" name="Additional Notes" rows="4" placeholder="Tell us about any current issues (e.g., green water, pump system check, salt cell cleaning...)"></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <span class="spinner"></span>
+                <span id="btnText">Submit Request</span>
+            </button>
+
+            <div id="formStatus" class="status-message"></div>
+
+        </form>
+    </main>
+
+    <script>
+        const form = document.getElementById('bookingForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const statusBox = document.getElementById('formStatus');
+        
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Reset status box on new attempt
+            statusBox.className = 'status-message';
+            statusBox.innerHTML = '';
+
+            // Basic HTML5 validation trigger
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const nameVal = document.getElementById('fullName').value.trim();
+            const streetVal = document.getElementById('address').value.trim();
+            const cityVal = document.getElementById('city').value.trim();
+            const postalVal = document.getElementById('postalCode').value.trim();
+            
+            document.getElementById('emailSubject').value = `${nameVal} - ${streetVal}, ${cityVal}, ${postalVal}`;
+
+            // UI Loading State
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            btnText.innerText = 'Sending...';
+
+            const formData = new FormData(form);
+            
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+                
+                if (response.ok) {
+                    statusBox.className = 'status-message status-success';
+                    statusBox.innerHTML = `Thank you, ${nameVal}! Your request has been sent successfully.`;
+                    form.reset();
+                } else {
+                    const data = await response.json();
+                    statusBox.className = 'status-message status-error';
+                    if (Object.hasOwn(data, 'errors')) {
+                        statusBox.innerHTML = data.errors.map(error => error.message).join(', ');
+                    } else {
+                        statusBox.innerHTML = 'Oops! There was a problem submitting your form. Please try again.';
+                    }
+                }
+            } catch (error) {
+                statusBox.className = 'status-message status-error';
+                statusBox.innerHTML = 'Connection error. Please check your internet and try again.';
+            } finally {
+                // Reset UI State
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+                btnText.innerText = 'Submit Request';
+            }
+        });
+    </script>
+</body>
+</html>
